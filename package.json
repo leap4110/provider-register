@@ -8,8 +8,13 @@
     "start": "next start",
     "lint": "eslint",
     "seed": "npx tsx scripts/seed-categories.ts",
+    "seed:test": "npx tsx scripts/seed-test-data.ts",
     "seed:sa4": "npx tsx scripts/seed-sa4-data.ts",
-    "format": "prettier --write ."
+    "seed:clean": "npx tsx scripts/clean-test-data.ts",
+    "sync:providers": "npx tsx scripts/sync-ndis-providers.ts",
+    "sync:compliance": "npx tsx scripts/sync-compliance-actions.ts",
+    "format": "prettier --write .",
+    "postbuild": "next-sitemap"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.1",
@@ -21,10 +26,12 @@
     "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "csv-parse": "^6.2.1",
     "dotenv": "^17.4.1",
     "lucide-react": "^1.7.0",
     "next": "16.2.2",
     "next-auth": "^5.0.0-beta.30",
+    "next-sitemap": "^4.2.3",
     "next-themes": "^0.4.6",
     "prisma": "^6.19.3",
     "react": "19.2.4",

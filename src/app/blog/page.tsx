@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { db } from "@/lib/db";
 import { BlogPostCard } from "@/components/blog/BlogPostCard";
 import { BlogTagFilter } from "@/components/blog/BlogTagFilter";

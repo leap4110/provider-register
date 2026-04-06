@@ -3,6 +3,8 @@ import { Search } from "lucide-react";
 import { db } from "@/lib/db";
 import { DynamicIcon } from "@/components/ui/DynamicIcon";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "NDIS Navigator — Learn About NDIS Services",
   description:

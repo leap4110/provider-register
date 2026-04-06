@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import Link from "next/link";
 import { ChevronRight, BarChart3, Handshake, Search, ArrowRight } from "lucide-react";
 import { db } from "@/lib/db";
