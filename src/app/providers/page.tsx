@@ -8,6 +8,9 @@ import {
   X,
   ArrowRight,
 } from "lucide-react";
+import { ParallaxSection } from "@/components/animations/ParallaxSection";
+import { ScrollReveal } from "@/components/animations/ScrollReveal";
+import { StaggerChildren } from "@/components/animations/StaggerChildren";
 
 export const metadata = {
   title: "For Providers — NDIS Provider Directory",
@@ -134,35 +137,39 @@ export default function ProvidersPage() {
   return (
     <div>
       {/* Hero */}
-      <section className="bg-gradient-to-r from-blue-600 to-indigo-700 px-4 py-20 text-center">
-        <div className="mx-auto max-w-3xl">
-          <h1 className="text-3xl font-bold tracking-tight text-white md:text-5xl">
-            Grow Your NDIS Business
-          </h1>
-          <p className="mt-4 text-lg text-blue-100 md:text-xl">
-            Join thousands of providers using our directory to reach
-            participants, build trust, and grow their services.
-          </p>
-          <Link
-            href="/register"
-            className="mt-8 inline-flex h-12 items-center gap-2 rounded-lg bg-white px-8 font-semibold text-blue-700 transition-colors hover:bg-blue-50"
-          >
-            Get Started
-            <ArrowRight className="h-5 w-5" />
-          </Link>
-        </div>
-      </section>
+      <ParallaxSection speed={-0.15}>
+        <section className="bg-gradient-to-r from-blue-600 to-indigo-700 px-4 py-20 text-center">
+          <div className="mx-auto max-w-3xl">
+            <h1 className="text-3xl font-bold tracking-tight text-white md:text-5xl">
+              Grow Your NDIS Business
+            </h1>
+            <p className="mt-4 text-lg text-blue-100 md:text-xl">
+              Join thousands of providers using our directory to reach
+              participants, build trust, and grow their services.
+            </p>
+            <Link
+              href="/register"
+              className="mt-8 inline-flex h-12 items-center gap-2 rounded-lg bg-white px-8 font-semibold text-blue-700 transition-colors hover:bg-blue-50"
+            >
+              Get Started
+              <ArrowRight className="h-5 w-5" />
+            </Link>
+          </div>
+        </section>
+      </ParallaxSection>
 
       {/* Benefits */}
       <section className="bg-white px-4 py-16">
         <div className="mx-auto max-w-4xl">
-          <h2 className="text-center text-2xl font-bold text-gray-900 md:text-3xl">
-            Why List With Us
-          </h2>
-          <p className="mt-2 text-center text-gray-600">
-            Everything you need to attract and retain NDIS participants.
-          </p>
-          <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <ScrollReveal direction="up">
+            <h2 className="text-center text-2xl font-bold text-gray-900 md:text-3xl">
+              Why List With Us
+            </h2>
+            <p className="mt-2 text-center text-gray-600">
+              Everything you need to attract and retain NDIS participants.
+            </p>
+          </ScrollReveal>
+          <StaggerChildren staggerDelay={0.12} className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
             {benefits.map((benefit) => (
               <div
                 key={benefit.title}
@@ -181,20 +188,22 @@ export default function ProvidersPage() {
                 </p>
               </div>
             ))}
-          </div>
+          </StaggerChildren>
         </div>
       </section>
 
       {/* Pricing */}
       <section className="bg-gray-50 px-4 py-16">
         <div className="mx-auto max-w-4xl">
-          <h2 className="text-center text-2xl font-bold text-gray-900 md:text-3xl">
-            Simple, Transparent Pricing
-          </h2>
-          <p className="mt-2 text-center text-gray-600">
-            Choose the plan that fits your business. No hidden fees.
-          </p>
-          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
+          <ScrollReveal direction="up">
+            <h2 className="text-center text-2xl font-bold text-gray-900 md:text-3xl">
+              Simple, Transparent Pricing
+            </h2>
+            <p className="mt-2 text-center text-gray-600">
+              Choose the plan that fits your business. No hidden fees.
+            </p>
+          </ScrollReveal>
+          <StaggerChildren staggerDelay={0.15} className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
             {plans.map((plan) => (
               <div
                 key={plan.name}
@@ -254,67 +263,71 @@ export default function ProvidersPage() {
                 </ul>
               </div>
             ))}
-          </div>
+          </StaggerChildren>
         </div>
       </section>
 
       {/* FAQ */}
       <section className="bg-white px-4 py-16">
-        <div className="mx-auto max-w-3xl">
-          <h2 className="text-center text-2xl font-bold text-gray-900 md:text-3xl">
-            Frequently Asked Questions
-          </h2>
-          <div className="mt-10 space-y-3">
-            {faqs.map((faq) => (
-              <details
-                key={faq.question}
-                className="group rounded-lg border border-gray-200 bg-white"
-              >
-                <summary className="flex cursor-pointer items-center justify-between px-5 py-4 font-medium text-gray-900 marker:[content:''] [&::-webkit-details-marker]:hidden">
-                  {faq.question}
-                  <span className="ml-2 shrink-0 text-gray-400 transition-transform group-open:rotate-180">
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 16 16"
-                      fill="none"
-                    >
-                      <path
-                        d="M4 6l4 4 4-4"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </span>
-                </summary>
-                <p className="px-5 pb-4 text-sm text-gray-600">{faq.answer}</p>
-              </details>
-            ))}
+        <ScrollReveal direction="up">
+          <div className="mx-auto max-w-3xl">
+            <h2 className="text-center text-2xl font-bold text-gray-900 md:text-3xl">
+              Frequently Asked Questions
+            </h2>
+            <div className="mt-10 space-y-3">
+              {faqs.map((faq) => (
+                <details
+                  key={faq.question}
+                  className="group rounded-lg border border-gray-200 bg-white"
+                >
+                  <summary className="flex cursor-pointer items-center justify-between px-5 py-4 font-medium text-gray-900 marker:[content:''] [&::-webkit-details-marker]:hidden">
+                    {faq.question}
+                    <span className="ml-2 shrink-0 text-gray-400 transition-transform group-open:rotate-180">
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                      >
+                        <path
+                          d="M4 6l4 4 4-4"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  </summary>
+                  <p className="px-5 pb-4 text-sm text-gray-600">{faq.answer}</p>
+                </details>
+              ))}
+            </div>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
 
       {/* Bottom CTA */}
-      <section className="bg-gradient-to-r from-blue-600 to-indigo-700 px-4 py-16 text-center">
-        <div className="mx-auto max-w-3xl">
-          <h2 className="text-2xl font-bold text-white md:text-3xl">
-            Ready to Reach More Participants?
-          </h2>
-          <p className="mt-3 text-blue-100">
-            Create your account today and start connecting with NDIS
-            participants in your area.
-          </p>
-          <Link
-            href="/register"
-            className="mt-8 inline-flex h-12 items-center gap-2 rounded-lg bg-white px-8 font-semibold text-blue-700 transition-colors hover:bg-blue-50"
-          >
-            Create Your Account
-            <ArrowRight className="h-5 w-5" />
-          </Link>
-        </div>
-      </section>
+      <ScrollReveal direction="up">
+        <section className="bg-gradient-to-r from-blue-600 to-indigo-700 px-4 py-16 text-center">
+          <div className="mx-auto max-w-3xl">
+            <h2 className="text-2xl font-bold text-white md:text-3xl">
+              Ready to Reach More Participants?
+            </h2>
+            <p className="mt-3 text-blue-100">
+              Create your account today and start connecting with NDIS
+              participants in your area.
+            </p>
+            <Link
+              href="/register"
+              className="mt-8 inline-flex h-12 items-center gap-2 rounded-lg bg-white px-8 font-semibold text-blue-700 transition-colors hover:bg-blue-50"
+            >
+              Create Your Account
+              <ArrowRight className="h-5 w-5" />
+            </Link>
+          </div>
+        </section>
+      </ScrollReveal>
     </div>
   );
 }

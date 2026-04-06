@@ -1,5 +1,9 @@
 import Link from "next/link";
 import { ShieldCheck, Heart, Users, Mail, Phone } from "lucide-react";
+import { ParallaxSection } from "@/components/animations/ParallaxSection";
+import { ScrollReveal } from "@/components/animations/ScrollReveal";
+import { StaggerChildren } from "@/components/animations/StaggerChildren";
+import { CountUp } from "@/components/animations/CountUp";
 
 export const metadata = {
   title: "About Us — NDIS Provider Directory",
@@ -11,51 +15,59 @@ export default function AboutPage() {
   return (
     <div>
       {/* Hero */}
-      <section className="bg-gradient-to-r from-blue-600 to-indigo-700 px-4 py-16 text-center">
-        <div className="mx-auto max-w-3xl">
-          <h1 className="text-3xl font-bold tracking-tight text-white md:text-5xl">
-            Making NDIS services transparent and accessible
-          </h1>
-          <p className="mt-4 text-lg text-blue-100 md:text-xl">
-            We believe every NDIS participant deserves the information they need
-            to make confident choices about their support.
-          </p>
-        </div>
-      </section>
+      <ParallaxSection speed={-0.2}>
+        <section className="bg-gradient-to-r from-blue-600 to-indigo-700 px-4 py-16 text-center">
+          <div className="mx-auto max-w-3xl">
+            <h1 className="text-3xl font-bold tracking-tight text-white md:text-5xl">
+              Making NDIS services transparent and accessible
+            </h1>
+            <p className="mt-4 text-lg text-blue-100 md:text-xl">
+              We believe every NDIS participant deserves the information they need
+              to make confident choices about their support.
+            </p>
+          </div>
+        </section>
+      </ParallaxSection>
 
       {/* Our Mission */}
       <section className="bg-white px-4 py-16">
         <div className="mx-auto max-w-3xl">
-          <h2 className="text-2xl font-bold text-gray-900 md:text-3xl">
-            Our Mission
-          </h2>
-          <div className="prose prose-gray mt-6 max-w-none">
-            <p>
-              The National Disability Insurance Scheme has transformed the way
-              Australians with disability access support services. But with
-              thousands of registered providers across the country, finding the
-              right fit can be overwhelming. Our mission is to bring
-              transparency, accountability, and genuine participant choice to the
-              NDIS provider landscape.
-            </p>
-            <p>
-              We do this by giving participants and their families the tools to
-              search, compare, and review NDIS providers in one place. Every
-              listing includes compliance data, service details, and real
-              feedback from other participants, so you can make informed
-              decisions without endless phone calls and guesswork.
-            </p>
-          </div>
+          <ScrollReveal direction="up">
+            <h2 className="text-2xl font-bold text-gray-900 md:text-3xl">
+              Our Mission
+            </h2>
+          </ScrollReveal>
+          <ScrollReveal direction="up" delay={0.15}>
+            <div className="prose prose-gray mt-6 max-w-none">
+              <p>
+                The National Disability Insurance Scheme has transformed the way
+                Australians with disability access support services. But with
+                thousands of registered providers across the country, finding the
+                right fit can be overwhelming. Our mission is to bring
+                transparency, accountability, and genuine participant choice to the
+                NDIS provider landscape.
+              </p>
+              <p>
+                We do this by giving participants and their families the tools to
+                search, compare, and review NDIS providers in one place. Every
+                listing includes compliance data, service details, and real
+                feedback from other participants, so you can make informed
+                decisions without endless phone calls and guesswork.
+              </p>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* What Makes Us Different */}
       <section className="bg-gray-50 px-4 py-16">
         <div className="mx-auto max-w-4xl">
-          <h2 className="text-center text-2xl font-bold text-gray-900 md:text-3xl">
-            What Makes Us Different
-          </h2>
-          <div className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-3">
+          <ScrollReveal direction="up">
+            <h2 className="text-center text-2xl font-bold text-gray-900 md:text-3xl">
+              What Makes Us Different
+            </h2>
+          </ScrollReveal>
+          <StaggerChildren staggerDelay={0.15} className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-3">
             <div className="rounded-xl bg-white p-6 shadow-sm">
               <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100">
                 <ShieldCheck className="h-6 w-6 text-blue-600" />
@@ -98,6 +110,37 @@ export default function AboutPage() {
                 the community identify outstanding services.
               </p>
             </div>
+          </StaggerChildren>
+        </div>
+      </section>
+
+      {/* Stats */}
+      <section className="bg-blue-600 px-4 py-16">
+        <div className="mx-auto max-w-4xl">
+          <ScrollReveal direction="up">
+            <h2 className="text-center text-2xl font-bold text-white md:text-3xl">
+              Trusted Across Australia
+            </h2>
+          </ScrollReveal>
+          <div className="mt-10 grid grid-cols-1 gap-8 text-center sm:grid-cols-3">
+            <ScrollReveal direction="up" delay={0.1}>
+              <div>
+                <CountUp end={5000} suffix="+" className="text-4xl font-bold text-white md:text-5xl" />
+                <p className="mt-2 text-blue-100">Registered Providers</p>
+              </div>
+            </ScrollReveal>
+            <ScrollReveal direction="up" delay={0.25}>
+              <div>
+                <CountUp end={200000} suffix="+" className="text-4xl font-bold text-white md:text-5xl" />
+                <p className="mt-2 text-blue-100">NDIS Participants</p>
+              </div>
+            </ScrollReveal>
+            <ScrollReveal direction="up" delay={0.4}>
+              <div>
+                <CountUp end={44} className="text-4xl font-bold text-white md:text-5xl" />
+                <p className="mt-2 text-blue-100">Service Categories</p>
+              </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
@@ -105,70 +148,76 @@ export default function AboutPage() {
       {/* Our Story */}
       <section className="bg-white px-4 py-16">
         <div className="mx-auto max-w-3xl">
-          <h2 className="text-2xl font-bold text-gray-900 md:text-3xl">
-            Our Story
-          </h2>
-          <div className="prose prose-gray mt-6 max-w-none">
-            <p>
-              Founded in 2026, the NDIS Provider Directory grew out of a simple
-              frustration: finding reliable, high-quality disability support
-              services in Australia was harder than it needed to be. As NDIS
-              participants and their families, our founding team experienced
-              first-hand the difficulty of navigating a fragmented provider
-              landscape with limited information.
-            </p>
-            <p>
-              We started by building a searchable database of registered
-              providers and layering on real participant reviews. From there, we
-              added compliance transparency, service matching, and tools for
-              support coordinators. Today, we serve thousands of participants
-              across every state and territory.
-            </p>
-            <p>
-              Our team is based in Australia and includes people with lived
-              experience of disability, allied health professionals, and
-              technologists who are passionate about improving outcomes for NDIS
-              participants. We work closely with the disability community to
-              ensure the platform reflects the needs of the people it serves.
-            </p>
-          </div>
+          <ScrollReveal direction="up">
+            <h2 className="text-2xl font-bold text-gray-900 md:text-3xl">
+              Our Story
+            </h2>
+          </ScrollReveal>
+          <ScrollReveal direction="up" delay={0.15}>
+            <div className="prose prose-gray mt-6 max-w-none">
+              <p>
+                Founded in 2026, the NDIS Provider Directory grew out of a simple
+                frustration: finding reliable, high-quality disability support
+                services in Australia was harder than it needed to be. As NDIS
+                participants and their families, our founding team experienced
+                first-hand the difficulty of navigating a fragmented provider
+                landscape with limited information.
+              </p>
+              <p>
+                We started by building a searchable database of registered
+                providers and layering on real participant reviews. From there, we
+                added compliance transparency, service matching, and tools for
+                support coordinators. Today, we serve thousands of participants
+                across every state and territory.
+              </p>
+              <p>
+                Our team is based in Australia and includes people with lived
+                experience of disability, allied health professionals, and
+                technologists who are passionate about improving outcomes for NDIS
+                participants. We work closely with the disability community to
+                ensure the platform reflects the needs of the people it serves.
+              </p>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* Contact */}
       <section className="bg-gray-50 px-4 py-16">
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-2xl font-bold text-gray-900 md:text-3xl">
-            Get in Touch
-          </h2>
-          <p className="mt-3 text-gray-600">
-            Have questions or feedback? We&apos;d love to hear from you.
-          </p>
-          <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-8">
-            <a
-              href="mailto:hello@ndisproviders.com.au"
-              className="inline-flex items-center gap-2 text-gray-700 hover:text-blue-600"
-            >
-              <Mail className="h-5 w-5" />
-              hello@ndisproviders.com.au
-            </a>
-            <a
-              href="tel:1800000123"
-              className="inline-flex items-center gap-2 text-gray-700 hover:text-blue-600"
-            >
-              <Phone className="h-5 w-5" />
-              1800 000 123
-            </a>
+        <ScrollReveal direction="up">
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className="text-2xl font-bold text-gray-900 md:text-3xl">
+              Get in Touch
+            </h2>
+            <p className="mt-3 text-gray-600">
+              Have questions or feedback? We&apos;d love to hear from you.
+            </p>
+            <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-8">
+              <a
+                href="mailto:hello@ndisproviders.com.au"
+                className="inline-flex items-center gap-2 text-gray-700 hover:text-blue-600"
+              >
+                <Mail className="h-5 w-5" />
+                hello@ndisproviders.com.au
+              </a>
+              <a
+                href="tel:1800000123"
+                className="inline-flex items-center gap-2 text-gray-700 hover:text-blue-600"
+              >
+                <Phone className="h-5 w-5" />
+                1800 000 123
+              </a>
+            </div>
+            <div className="mt-8">
+              <Link
+                href="/contact"
+                className="inline-flex h-10 items-center rounded-lg bg-blue-600 px-6 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+              >
+                Contact Us
+              </Link>
+            </div>
           </div>
-          <div className="mt-8">
-            <Link
-              href="/contact"
-              className="inline-flex h-10 items-center rounded-lg bg-blue-600 px-6 text-sm font-medium text-white transition-colors hover:bg-blue-700"
-            >
-              Contact Us
-            </Link>
-          </div>
-        </div>
+        </ScrollReveal>
       </section>
     </div>
   );
