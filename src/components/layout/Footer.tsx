@@ -3,24 +3,25 @@ import { Globe, Link2, Camera, Mail, Phone } from "lucide-react";
 
 const aboutLinks = [
   { href: "/about", label: "About Us" },
-  { href: "/our-story", label: "Our Story" },
   { href: "/contact", label: "Contact" },
   { href: "/blog", label: "Blog" },
   { href: "/privacy", label: "Privacy Policy" },
+  { href: "/terms", label: "Terms of Service" },
 ];
 
 const participantLinks = [
   { href: "/search", label: "Search Services" },
   { href: "/service-request", label: "Service Request" },
+  { href: "/ndis-navigator", label: "NDIS Navigator" },
   { href: "/how-it-works", label: "How It Works" },
-  { href: "/faqs", label: "FAQs" },
+  { href: "/faq", label: "FAQ" },
 ];
 
 const providerLinks = [
-  { href: "/pricing", label: "Pricing" },
+  { href: "/providers", label: "Pricing" },
   { href: "/register", label: "Register" },
   { href: "/dashboard", label: "Dashboard" },
-  { href: "/help", label: "Help Center" },
+  { href: "/faq", label: "Help Center" },
 ];
 
 export function Footer() {

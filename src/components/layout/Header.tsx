@@ -32,6 +32,7 @@ function getInitials(name: string): string {
 
 const navLinks = [
   { href: "/search", label: "Find Services" },
+  { href: "/ndis-navigator", label: "NDIS Navigator" },
   { href: "/providers", label: "For Business" },
   { href: "/blog", label: "Blog" },
 ];
