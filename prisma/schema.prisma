@@ -1,0 +1,327 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  PARTICIPANT
+  PROVIDER_ADMIN
+  PROVIDER_STAFF
+  SUPPORT_COORDINATOR
+  PLATFORM_ADMIN
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  passwordHash  String?
+  name          String
+  phone         String?
+  role          UserRole
+  emailVerified DateTime?
+  avatar        String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  provider        ProviderMember?
+  reviews         Review[]
+  serviceRequests ServiceRequest[]
+  sessions        Session[]
+  notifications   NotificationSettings?
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum ProviderTier {
+  STARTER
+  ACCREDITATION_PLUS
+  ENTERPRISE
+}
+
+enum RegistrationStatus {
+  REGISTERED
+  UNREGISTERED
+  DEREGISTERED
+  CONDITIONS_APPLIED
+}
+
+model Provider {
+  id                 String             @id @default(cuid())
+  name               String
+  slug               String             @unique
+  abn                String?            @unique
+  description        String?            @db.Text
+  logo               String?
+  website            String?
+  email              String?
+  phone              String?
+  address            String?
+  suburb             String?
+  state              String?
+  postcode           String?
+  latitude           Float?
+  longitude          Float?
+  hideExactAddress   Boolean            @default(false)
+
+  ndisRegistered     Boolean            @default(false)
+  registrationStatus RegistrationStatus @default(UNREGISTERED)
+  ndisProviderNumber String?
+  registrationGroups String[]
+
+  complianceActions  ComplianceAction[]
+  lastAuditDate      DateTime?
+  conditionsOnReg    String?            @db.Text
+  banningOrders      BanningOrder[]
+
+  tier               ProviderTier       @default(STARTER)
+  trialEndsAt        DateTime?
+  subscriptionId     String?
+  subscriptionStatus String?
+
+  photoGallery       ProviderPhoto[]
+  accredited         Boolean            @default(false)
+  verifiedAt         DateTime?
+
+  profileViews       Int                @default(0)
+  searchImpressions  Int                @default(0)
+
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  members          ProviderMember[]
+  serviceOfferings ServiceOffering[]
+  reviews          Review[]
+  serviceRequests  ServiceRequestMatch[]
+  categories       ProviderCategory[]
+}
+
+model ProviderMember {
+  id         String   @id @default(cuid())
+  userId     String   @unique
+  providerId String
+  role       String   @default("admin")
+  user       User     @relation(fields: [userId], references: [id])
+  provider   Provider @relation(fields: [providerId], references: [id])
+}
+
+model ProviderPhoto {
+  id         String   @id @default(cuid())
+  providerId String
+  url        String
+  alt        String?
+  order      Int      @default(0)
+  provider   Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+}
+
+enum ComplianceActionType {
+  CONDITION_ON_REGISTRATION
+  SUSPENSION
+  REVOCATION
+  BANNING_ORDER
+  INFRINGEMENT_NOTICE
+  COMPLIANCE_NOTICE
+  ENFORCEABLE_UNDERTAKING
+  COURT_ORDER
+}
+
+model ComplianceAction {
+  id           String               @id @default(cuid())
+  providerId   String
+  type         ComplianceActionType
+  description  String               @db.Text
+  dateIssued   DateTime
+  dateResolved DateTime?
+  isActive     Boolean              @default(true)
+  sourceUrl    String?
+  provider     Provider             @relation(fields: [providerId], references: [id])
+
+  @@index([providerId, isActive])
+}
+
+model BanningOrder {
+  id             String    @id @default(cuid())
+  providerId     String?
+  individualName String?
+  description    String    @db.Text
+  dateIssued     DateTime
+  dateExpires    DateTime?
+  isActive       Boolean   @default(true)
+  sourceUrl      String?
+  provider       Provider? @relation(fields: [providerId], references: [id])
+}
+
+model ServiceCategory {
+  id          String             @id @default(cuid())
+  name        String             @unique
+  slug        String             @unique
+  description String?
+  icon        String?
+  parentId    String?
+  parent      ServiceCategory?   @relation("CategoryTree", fields: [parentId], references: [id])
+  children    ServiceCategory[]  @relation("CategoryTree")
+  providers   ProviderCategory[]
+  offerings   ServiceOffering[]
+}
+
+model ProviderCategory {
+  providerId String
+  categoryId String
+  provider   Provider        @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  category   ServiceCategory @relation(fields: [categoryId], references: [id])
+
+  @@id([providerId, categoryId])
+}
+
+model ServiceOffering {
+  id          String   @id @default(cuid())
+  providerId  String
+  categoryId  String
+  description String?  @db.Text
+  isActive    Boolean  @default(true)
+
+  sa4Codes      String[]
+  postcodes     String[]
+  ageGroups     String[]
+  accessMethods String[]
+  languages     String[]
+  availableDays String[]
+
+  telehealth    Boolean @default(false)
+  mobileService Boolean @default(false)
+
+  provider  Provider        @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  category  ServiceCategory @relation(fields: [categoryId], references: [id])
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  @@index([categoryId, isActive])
+}
+
+model Review {
+  id          String   @id @default(cuid())
+  providerId  String
+  userId      String
+  rating      Int
+  title       String?
+  content     String   @db.Text
+  isVerified  Boolean  @default(false)
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  provider Provider @relation(fields: [providerId], references: [id])
+  user     User     @relation(fields: [userId], references: [id])
+
+  @@unique([providerId, userId])
+  @@index([providerId, isPublished])
+}
+
+enum ServiceRequestStatus {
+  OPEN
+  MATCHED
+  ACCEPTED
+  IN_PROGRESS
+  SUCCESSFUL
+  UNSUCCESSFUL
+  DECLINED
+  EXPIRED
+}
+
+model ServiceRequest {
+  id              String               @id @default(cuid())
+  userId          String
+  categoryId      String?
+  description     String               @db.Text
+  postcode        String
+  sa4Code         String?
+  suburb          String?
+  state           String?
+
+  ageGroup        String?
+  accessMethod    String?
+  ndisNumber      String?
+  additionalNotes String?              @db.Text
+
+  maxProviders Int                  @default(3)
+  status       ServiceRequestStatus @default(OPEN)
+  expiresAt    DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User                  @relation(fields: [userId], references: [id])
+  matches ServiceRequestMatch[]
+}
+
+model ServiceRequestMatch {
+  id               String               @id @default(cuid())
+  serviceRequestId String
+  providerId       String
+  status           ServiceRequestStatus @default(OPEN)
+  reservedAt       DateTime?
+  acceptedAt       DateTime?
+  declinedAt       DateTime?
+  internalNotes    String?              @db.Text
+
+  serviceRequest ServiceRequest @relation(fields: [serviceRequestId], references: [id])
+  provider       Provider       @relation(fields: [providerId], references: [id])
+
+  @@unique([serviceRequestId, providerId])
+  @@index([providerId, status])
+}
+
+model SA4Region {
+  code      String   @id
+  name      String
+  state     String
+  postcodes String[]
+}
+
+model PostcodeMapping {
+  postcode  String @id
+  suburb    String
+  state     String
+  sa4Code   String
+  latitude  Float
+  longitude Float
+
+  @@index([sa4Code])
+  @@index([state])
+}
+
+model BlogPost {
+  id          String    @id @default(cuid())
+  title       String
+  slug        String    @unique
+  content     String    @db.Text
+  excerpt     String?
+  coverImage  String?
+  authorName  String
+  authorRole  String?
+  isPublished Boolean   @default(false)
+  publishedAt DateTime?
+  tags        String[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model NotificationSettings {
+  id              String  @id @default(cuid())
+  userId          String  @unique
+  user            User    @relation(fields: [userId], references: [id])
+  emailEnabled    Boolean @default(true)
+  smsEnabled      Boolean @default(true)
+  serviceRequests Boolean @default(true)
+  reviewAlerts    Boolean @default(true)
+  marketingEmails Boolean @default(false)
+}
