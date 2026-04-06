@@ -1,76 +1,191 @@
 import Link from "next/link";
-import { Search, Building, Shield } from "lucide-react";
+import { ChevronRight, BarChart3, Handshake, Search, ArrowRight } from "lucide-react";
+import { db } from "@/lib/db";
+import { CategoryCard } from "@/components/search/CategoryCard";
+import { ReviewPreviewCard } from "@/components/reviews/ReviewPreviewCard";
+import { HeroSearch } from "@/components/search/HeroSearch";
 
-export default function Home() {
+async function getCategories() {
+  return db.serviceCategory.findMany({
+    take: 8,
+    orderBy: { name: "asc" },
+  });
+}
+
+async function getRecentReviews() {
+  return db.review.findMany({
+    where: { isPublished: true },
+    take: 3,
+    orderBy: { createdAt: "desc" },
+    include: {
+      provider: {
+        select: { name: true, slug: true },
+        },
+      user: {
+        select: { name: true },
+      },
+    },
+  });
+}
+
+export default async function Home() {
+  const [categories, reviews] = await Promise.all([
+    getCategories(),
+    getRecentReviews(),
+  ]);
+
   return (
     <div>
       {/* Hero */}
-      <section className="bg-gradient-to-b from-blue-50 to-white px-4 py-20 text-center">
-        <div className="mx-auto max-w-3xl">
-          <h1 className="mb-4 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-            Find the Right NDIS Provider
+      <section className="bg-gradient-to-br from-blue-600 to-blue-800 px-4 py-20 text-center md:py-32">
+        <div className="mx-auto max-w-4xl">
+          <h1 className="text-3xl font-bold tracking-tight text-white md:text-5xl">
+            Find the right NDIS service for you
           </h1>
-          <p className="mb-8 text-lg text-gray-600">
-            Search and connect with trusted NDIS service providers across
-            Australia. Compare services, read reviews, and find the support you
-            need.
+          <p className="mt-4 text-lg text-blue-100 md:text-xl">
+            With ratings &amp; reviews you can trust
           </p>
-          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <HeroSearch />
+        </div>
+      </section>
+
+      {/* Popular Categories */}
+      <section className="bg-white px-4 py-16">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="text-center text-2xl font-bold text-gray-900 md:text-3xl">
+            Browse by service type
+          </h2>
+          <p className="mt-2 text-center text-gray-500">
+            Find the support you need
+          </p>
+          <div className="mb-10 mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">
+            {categories.map((cat) => (
+              <CategoryCard
+                key={cat.id}
+                name={cat.name}
+                slug={cat.slug}
+                icon={cat.icon || "help-circle"}
+              />
+            ))}
+          </div>
+          <div className="text-center">
             <Link
               href="/search"
-              className="inline-flex h-12 items-center justify-center rounded-lg bg-blue-600 px-8 text-base font-medium text-white transition-colors hover:bg-blue-700"
+              className="inline-flex items-center gap-1 text-blue-600 hover:underline"
             >
-              Search Providers
-            </Link>
-            <Link
-              href="/register"
-              className="inline-flex h-12 items-center justify-center rounded-lg border border-gray-300 bg-white px-8 text-base font-medium text-gray-900 transition-colors hover:bg-gray-50"
-            >
-              List Your Service
+              View all categories
+              <ChevronRight className="h-4 w-4" />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Features */}
-      <section className="mx-auto max-w-5xl px-4 py-16">
-        <div className="grid gap-8 md:grid-cols-3">
-          <div className="text-center">
-            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100">
-              <Search className="h-6 w-6 text-blue-600" />
+      {/* How it Works */}
+      <section className="bg-gray-50 px-4 py-16">
+        <div className="mx-auto max-w-5xl">
+          <h2 className="text-center text-2xl font-bold text-gray-900 md:text-3xl">
+            How it works
+          </h2>
+          <p className="mt-2 text-center text-gray-500">
+            Finding disability support made simple
+          </p>
+          <div className="relative mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
+            {/* Step 1 */}
+            <div className="text-center">
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-lg font-bold text-blue-600">
+                1
+              </div>
+              <Search className="mx-auto mt-4 text-blue-600" size={28} />
+              <h3 className="mt-4 text-lg font-semibold">Search</h3>
+              <p className="mt-2 text-sm text-gray-500">
+                Search for NDIS services by category, location, or keyword
+              </p>
             </div>
-            <h3 className="mb-2 text-lg font-semibold text-gray-900">
-              Search &amp; Compare
-            </h3>
-            <p className="text-sm text-gray-600">
-              Browse providers by service type, location, and specialisation to
-              find your perfect match.
-            </p>
-          </div>
-          <div className="text-center">
-            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100">
-              <Shield className="h-6 w-6 text-blue-600" />
+            {/* Arrow 1 */}
+            <div className="absolute left-[28%] top-6 hidden md:block">
+              <ChevronRight className="h-6 w-6 text-gray-300" />
             </div>
-            <h3 className="mb-2 text-lg font-semibold text-gray-900">
-              Verified Providers
-            </h3>
-            <p className="text-sm text-gray-600">
-              Check NDIS registration status, compliance history, and real
-              participant reviews.
-            </p>
-          </div>
-          <div className="text-center">
-            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100">
-              <Building className="h-6 w-6 text-blue-600" />
+            {/* Step 2 */}
+            <div className="text-center">
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-lg font-bold text-blue-600">
+                2
+              </div>
+              <BarChart3 className="mx-auto mt-4 text-blue-600" size={28} />
+              <h3 className="mt-4 text-lg font-semibold">Compare</h3>
+              <p className="mt-2 text-sm text-gray-500">
+                Read reviews and ratings from real participants to compare
+                providers
+              </p>
             </div>
-            <h3 className="mb-2 text-lg font-semibold text-gray-900">
-              Connect Directly
-            </h3>
-            <p className="text-sm text-gray-600">
-              Submit service requests and let matching providers come to you with
-              personalised quotes.
-            </p>
+            {/* Arrow 2 */}
+            <div className="absolute left-[61%] top-6 hidden md:block">
+              <ChevronRight className="h-6 w-6 text-gray-300" />
+            </div>
+            {/* Step 3 */}
+            <div className="text-center">
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 text-lg font-bold text-blue-600">
+                3
+              </div>
+              <Handshake className="mx-auto mt-4 text-blue-600" size={28} />
+              <h3 className="mt-4 text-lg font-semibold">Connect</h3>
+              <p className="mt-2 text-sm text-gray-500">
+                Submit a service request and we&apos;ll connect you with matched
+                providers
+              </p>
+            </div>
           </div>
+        </div>
+      </section>
+
+      {/* Recent Reviews */}
+      <section className="bg-white px-4 py-16">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="text-center text-2xl font-bold text-gray-900 md:text-3xl">
+            What participants are saying
+          </h2>
+          <div className="mt-10">
+            {reviews.length > 0 ? (
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+                {reviews.map((review) => (
+                  <ReviewPreviewCard
+                    key={review.id}
+                    rating={review.rating}
+                    content={review.content}
+                    providerName={review.provider.name}
+                    providerSlug={review.provider.slug}
+                    categoryName=""
+                    reviewerName={review.user.name}
+                  />
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-gray-500">
+                Be the first to leave a review!{" "}
+                <Link href="/search" className="text-blue-600 hover:underline">
+                  Find a provider
+                </Link>
+              </p>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Provider CTA */}
+      <section className="bg-blue-50 px-4 py-16">
+        <div className="mx-auto max-w-3xl text-center">
+          <h2 className="text-2xl font-bold text-gray-900 md:text-3xl">
+            Are you an NDIS provider?
+          </h2>
+          <p className="mt-3 text-gray-600">
+            Reach thousands of participants looking for services like yours
+          </p>
+          <Link
+            href="/providers"
+            className="mt-6 inline-flex h-11 items-center gap-2 rounded-lg bg-blue-600 px-8 font-medium text-white transition-colors hover:bg-blue-700"
+          >
+            Get Listed
+            <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
       </section>
     </div>
