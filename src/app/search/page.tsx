@@ -27,11 +27,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { SearchFilters } from "@/components/search/SearchFilters";
 import { ProviderCard } from "@/components/provider/ProviderCard";
 import { useProviderSearch } from "@/hooks/useProviderSearch";
+import { SearchMap } from "@/components/search/SearchMap";
+import { useUserLocation } from "@/hooks/useUserLocation";
 
 function SearchPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { data, isLoading, error } = useProviderSearch();
+  const { location: userLocation } = useUserLocation();
 
   const [searchInput, setSearchInput] = useState(
     searchParams.get("q") || ""
@@ -233,6 +236,29 @@ function SearchPageInner() {
                   </span>
                 </Badge>
               ))}
+            </div>
+          )}
+
+          {/* Map */}
+          {!isLoading && data?.providers?.length > 0 && (
+            <div className="mb-6 hidden lg:block">
+              {userLocation && !searchParams.get("postcode") && (
+                <p className="mb-2 text-sm text-gray-500">
+                  Showing providers near {userLocation.city || "you"}
+                  {userLocation.state ? `, ${userLocation.state}` : ""}
+                </p>
+              )}
+              <SearchMap
+                providers={data.providers}
+                userLocation={
+                  userLocation
+                    ? {
+                        latitude: userLocation.latitude,
+                        longitude: userLocation.longitude,
+                      }
+                    : null
+                }
+              />
             </div>
           )}
 

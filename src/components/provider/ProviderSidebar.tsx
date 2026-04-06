@@ -3,6 +3,7 @@ import { Send, MapPin, Flag } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { formatABN, formatDate } from "@/lib/utils/format";
+import { ProviderLocationMap } from "@/components/provider/ProviderLocationMap";
 
 interface ProviderSidebarProps {
   provider: {
@@ -63,20 +64,23 @@ export function ProviderSidebar({
         )}
       </div>
 
-      {/* Map Placeholder */}
+      {/* Map */}
       <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
         <div className="px-4 pb-2 pt-4 text-sm font-semibold text-gray-700">
           Location
         </div>
-        <div className="flex h-56 items-center justify-center bg-gray-100">
-          {provider.latitude && provider.longitude ? (
-            <p className="text-sm text-gray-500">
-              Map requires Google Maps API key
-            </p>
-          ) : (
+        {provider.latitude && provider.longitude ? (
+          <ProviderLocationMap
+            latitude={provider.latitude}
+            longitude={provider.longitude}
+            hideExactAddress={provider.hideExactAddress}
+            providerName=""
+          />
+        ) : (
+          <div className="flex h-56 items-center justify-center bg-gray-100">
             <p className="text-sm text-gray-400">Location not available</p>
-          )}
-        </div>
+          </div>
+        )}
         <div className="flex items-center gap-1.5 px-4 py-3 text-sm text-gray-600">
           <MapPin size={14} />
           {provider.suburb || provider.state || provider.postcode ? (

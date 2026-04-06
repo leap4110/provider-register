@@ -151,6 +151,8 @@ export async function GET(req: Request) {
       logo: provider.logo,
       suburb: provider.suburb,
       state: provider.state,
+      latitude: provider.latitude,
+      longitude: provider.longitude,
       description: provider.description,
       ndisRegistered: provider.ndisRegistered,
       registrationStatus: provider.registrationStatus,
