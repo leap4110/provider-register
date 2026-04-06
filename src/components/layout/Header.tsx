@@ -90,6 +90,11 @@ export function Header() {
                     render={<Link href="/dashboard">Dashboard</Link>}
                   />
                 )}
+                {session.user.role === "PARTICIPANT" && (
+                  <DropdownMenuItem
+                    render={<Link href="/my-requests">My Requests</Link>}
+                  />
+                )}
                 <DropdownMenuItem
                   render={<Link href="/settings">Settings</Link>}
                 />
